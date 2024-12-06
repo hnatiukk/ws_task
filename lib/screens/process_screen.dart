@@ -109,7 +109,8 @@ class _ProcessScreenState extends State<ProcessScreen> {
 
     for (Level level in widget.levels) {
       Result result = _calculationsService.calculateResult(level);
-      _levelResults.add(LevelResult(id: level.id, result: result));
+      _levelResults
+          .add(LevelResult(id: level.id, result: result, field: level.field));
       setState(() {
         _calculationPercentage += levelPercentage;
       });

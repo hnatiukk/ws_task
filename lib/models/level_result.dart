@@ -3,8 +3,9 @@ import 'package:ws_task/models/point.dart';
 class LevelResult {
   String id;
   Result result;
+  List<String> field;
 
-  LevelResult({required this.id, required this.result});
+  LevelResult({required this.id, required this.result, required this.field});
 
   Map<String, dynamic> toJson() {
     Map<String, dynamic> json = {};
