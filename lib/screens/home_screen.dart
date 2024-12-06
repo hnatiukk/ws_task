@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ws_task/api/level_api.dart';
 import 'package:ws_task/models/api_response.dart';
 import 'package:ws_task/models/level.dart';
+import 'package:ws_task/screens/process_screen.dart';
 import 'package:ws_task/utils/constants.dart';
 import 'package:ws_task/utils/messages.dart';
 
@@ -13,11 +14,13 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  TextEditingController urlController = TextEditingController();
+  final LevelApi _levelApi = LevelApi();
+  final TextEditingController _urlController = TextEditingController();
+  bool _isLoadingLevels = false;
 
   @override
   void dispose() {
-    urlController.dispose();
+    _urlController.dispose();
     super.dispose();
   }
 
@@ -25,7 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home screen'),
+        title: const Text('Home screen', style: TextStyle(color: Colors.white)),
         backgroundColor: Theme.of(context).primaryColor,
       ),
       body: Padding(
@@ -35,13 +38,14 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             const Text('Set valid API base URL in order to continue'),
             TextField(
-              controller: urlController,
+              controller: _urlController,
             ),
-            Spacer(),
+            const Spacer(),
             SizedBox(
               width: double.infinity,
               child: FilledButton(
-                onPressed: getLevelsAndCalculate,
+                onPressed:
+                    _isLoadingLevels ? null : getLevelsAndBeginCalculations,
                 child: const Text('Start counting process'),
               ),
             )
@@ -51,14 +55,20 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  void getLevelsAndCalculate() async {
-    baseUrl = urlController.text;
+  void getLevelsAndBeginCalculations() async {
+    setState(() {
+      _isLoadingLevels = true;
+    });
 
-    LevelApi levelApi = LevelApi();
-    ApiResponse response = await levelApi.fetchLevels();
+    baseUrl = _urlController.text;
+
+    ApiResponse response = await _levelApi.fetchLevels();
 
     if (response.error) {
       showErrorMessage(response.message, context);
+      setState(() {
+        _isLoadingLevels = false;
+      });
       return;
     }
 
@@ -67,12 +77,12 @@ class _HomeScreenState extends State<HomeScreen> {
       fetchedLevels.add(Level.fromJson(level));
     }
 
-    //todo: jump to next screen
+    setState(() {
+      _isLoadingLevels = false;
+    });
 
-    calculateResults(fetchedLevels);
-  }
-
-  void calculateResults(List<Level> fetchedLevels) {
-
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => ProcessScreen(fetchedLevels),
+    ));
   }
 }

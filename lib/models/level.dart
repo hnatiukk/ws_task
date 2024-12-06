@@ -7,8 +7,10 @@ class Level {
   Point end;
 
   Level.fromJson(Map<String, dynamic> json)
-  : id = json['id'],
-  field = List<String>.from(json['field']),
-  start = Point.fromJson(json['start']),
-  end = Point.fromJson(json['end']);
+      : id = json['id'],
+        field = List<String>.from(json['field']),
+        start = Point.fromJson(json['start']),
+        end = Point.fromJson(json['end']);
+
+  Level(this.id, this.field, this.start, this.end);
 }

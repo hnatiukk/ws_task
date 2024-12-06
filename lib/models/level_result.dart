@@ -12,17 +12,34 @@ class LevelResult {
     json['result'] = result.toJson();
     return json;
   }
+
+  @override
+  String toString() {
+    return 'LevelResult{id: $id, result: $result}';
+  }
 }
 
-sealed class Result {
+class Result {
   List<Point> steps;
-  String path;
+  String get path {
+    if (steps.isEmpty) return '';
+    return steps.map((point) => '(${point.x},${point.y})').join('->');
+  }
 
-  Result({required this.steps, required this.path});
+  Result({required this.steps});
+
+  @override
+  String toString() {
+    return 'Result{steps: $steps, path: $path}';
+  }
 
   Map<String, dynamic> toJson() {
     Map<String, dynamic> json = {};
-    json['steps'] = steps.map((step) => step.toJson(),).toList();
+    json['steps'] = steps
+        .map(
+          (step) => step.toJson(),
+        )
+        .toList();
     json['path'] = path;
     return json;
   }
