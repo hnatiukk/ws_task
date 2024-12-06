@@ -32,7 +32,6 @@ class LevelApi {
               )
               .toList());
 
-      print(response.data);
       return ApiResponse.fromJson(response.data);
     } on DioException catch (e) {
       return ApiResponse(error: true, message: 'Сталась помилка: $e');

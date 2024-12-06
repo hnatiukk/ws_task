@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ws_task/models/level_result.dart';
+import 'package:ws_task/models/point.dart';
 import 'package:ws_task/utils/constants.dart';
 
 class PreviewScreen extends StatelessWidget {
@@ -40,21 +41,49 @@ class PreviewScreen extends StatelessWidget {
   }
 
   Widget _resultField() {
+    Point startPoint = levelResult.result.steps.first;
+    Point endPoint = levelResult.result.steps.last;
+    List<Point> pathPoints = levelResult.result.steps.getRange(1, levelResult.result.steps.length - 1).toList();
+
     return Column(
       children: [
-        for (String str in levelResult.field)
+        for (int x = 0; x < levelResult.field.length; x++)
           Expanded(
-              child: Row(
-            children: [
-              for (int i = 0; i < str.length; i++)
-                Expanded(
-                  child: Text(
-                    str[i],
-                    textAlign: TextAlign.center,
-                  ),
-                )
-            ],
-          ))
+            child: Row(
+              children: [
+                for (int y = 0; y < levelResult.field[x].length; y++)
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey),
+                        color: () {
+                          Point currentPoint = Point(x, y);
+                          if (currentPoint == startPoint) {
+                            return startPointColor;
+                          } else if (currentPoint == endPoint) {
+                            return endPointColor;
+                          } else if (pathPoints.contains(currentPoint)) {
+                            return pathPointColor;
+                          } else if (levelResult.field[x][y] == 'X') {
+                            return blockedPointColor;
+                          } else {
+                            return emptyPointColor;
+                          }
+                        }(),
+                      ),
+                      alignment: Alignment.center,
+                      height: double.infinity,
+
+                      child: Text(
+                        '($x, $y)',
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(color: Colors.purpleAccent),
+                      ),
+                    ),
+                  )
+              ],
+            ),
+          )
       ],
     );
   }
