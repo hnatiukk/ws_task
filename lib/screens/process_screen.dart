@@ -48,6 +48,7 @@ class _ProcessScreenState extends State<ProcessScreen> {
             Expanded(
                 child: Center(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     _isProcessingCalculations
@@ -68,7 +69,9 @@ class _ProcessScreenState extends State<ProcessScreen> {
             SizedBox(
               width: double.infinity,
               child: FilledButton(
-                onPressed: _isProcessingCalculations ? null : _sendResults,
+                onPressed: _isProcessingCalculations || _isSendingResults
+                    ? null
+                    : _sendResults,
                 child: const Text('Send results to server'),
               ),
             )
