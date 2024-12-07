@@ -53,6 +53,7 @@ class _ProcessScreenState extends State<ProcessScreen> {
                     _isProcessingCalculations
                         ? 'Processing calculations...'
                         : 'All calculations has finished, you can send your results to server',
+                    textAlign: TextAlign.center,
                   ),
                   const Divider(),
                   Text('$_calculationPercentage%'),
@@ -105,6 +106,8 @@ class _ProcessScreenState extends State<ProcessScreen> {
       _isProcessingCalculations = true;
     });
 
+    // кожен рівень буде додавати до відсотка завантаження сталий відсоток,
+    // наприклад: 5 рівнів - кожень рівень додає по 20% після свого обрахунку
     double levelPercentage = 100 / widget.levels.length;
 
     for (Level level in widget.levels) {

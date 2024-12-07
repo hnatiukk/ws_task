@@ -34,9 +34,11 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Padding(
         padding: EdgeInsets.all(defaultPadding),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Set valid API base URL in order to continue'),
+            const Text(
+              'Set valid API base URL in order to continue',
+              textAlign: TextAlign.center,
+            ),
             TextField(
               controller: _urlController,
             ),

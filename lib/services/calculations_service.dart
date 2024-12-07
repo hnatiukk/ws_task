@@ -16,17 +16,19 @@ class CalculationsService {
 
   // 8 можливих напрямків навколо точки
   final directions = [
-    Point(-1, -1), Point(-1, 0), Point(-1, 1),
-    Point(0, 1),                 Point(1, 1),
-    Point(1, 0), Point(1, -1),   Point(0, -1),
+    Point(-1, -1),
+    Point(-1, 0),
+    Point(-1, 1),
+    Point(0, 1),
+    Point(1, 1),
+    Point(1, 0),
+    Point(1, -1),
+    Point(0, -1),
   ];
 
   // bool, бо коли вертаєм true вже знайшли перескок з цієї точки, зовнішні навколо неї немає сенсу перевіряти
   bool findBestPath(Point point, Point end, List<String> field,
       Path currentPath, Path bestPath) {
-    debugPrint(point.toString());
-    debugPrint('end is $end');
-
     if (currentPath.length + 1 > bestPath.length) return false;
 
     currentPath.steps.add(point);
@@ -62,7 +64,6 @@ class CalculationsService {
     currentPath.steps.removeLast();
     return false;
   }
-
 }
 
 class Path {
